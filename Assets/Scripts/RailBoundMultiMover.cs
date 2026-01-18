@@ -3,6 +3,13 @@ using TMPro;
 
 public class RailBoundMultiMover : MonoBehaviour
 {
+    Vector3 screenStartPos;
+    Vector3 holderStartPos;
+    Vector3 rodStartPos;
+    Vector3 baseStartPos;
+    float initialDistance;
+
+
     [Header("Slit Base Reference")]
     public Transform slitBase;   // empty object placed at base front
     [Header("Collision Safe Stop")]
@@ -65,6 +72,11 @@ public class RailBoundMultiMover : MonoBehaviour
         // Start at original position
         currentDistance = screenFront;
         targetDistance = currentDistance;
+        screenStartPos = screen.position;
+        holderStartPos = holder.position;
+        rodStartPos = rod.position;
+        baseStartPos = basePlate.position;
+
     }
 
 
@@ -77,12 +89,13 @@ public class RailBoundMultiMover : MonoBehaviour
             Time.deltaTime * smoothSpeed
         );
 
-        Vector3 moveVector = railDirection.forward * currentDistance;
+        Vector3 moveVector = railDirection.forward * (currentDistance - initialDistance);
 
-        screen.position =
-            singleSlit.position +
-            moveVector +
-            Vector3.ProjectOnPlane(screenOffset, railDirection.forward);
+        screen.position = screenStartPos + moveVector;
+        holder.position = holderStartPos + moveVector;
+        rod.position = rodStartPos + moveVector;
+        basePlate.position = baseStartPos + moveVector;
+
 
         holder.position =
             singleSlit.position +
