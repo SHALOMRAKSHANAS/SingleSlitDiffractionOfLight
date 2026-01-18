@@ -8,6 +8,10 @@ public class RailBoundMultiMover : MonoBehaviour
     Vector3 rodStartPos;
     Vector3 baseStartPos;
     float initialDistance;
+    
+
+    
+
 
 
     [Header("Slit Base Reference")]
@@ -72,6 +76,8 @@ public class RailBoundMultiMover : MonoBehaviour
         // Start at original position
         currentDistance = screenFront;
         targetDistance = currentDistance;
+        initialDistance = currentDistance;
+
         screenStartPos = screen.position;
         holderStartPos = holder.position;
         rodStartPos = rod.position;
@@ -89,29 +95,15 @@ public class RailBoundMultiMover : MonoBehaviour
             Time.deltaTime * smoothSpeed
         );
 
-        Vector3 moveVector = railDirection.forward * (currentDistance - initialDistance);
+        Vector3 moveVector =
+            railDirection.forward * (currentDistance - initialDistance);
 
         screen.position = screenStartPos + moveVector;
         holder.position = holderStartPos + moveVector;
         rod.position = rodStartPos + moveVector;
         basePlate.position = baseStartPos + moveVector;
-
-
-        holder.position =
-            singleSlit.position +
-            moveVector +
-            Vector3.ProjectOnPlane(holderOffset, railDirection.forward);
-
-        rod.position =
-            singleSlit.position +
-            moveVector +
-            Vector3.ProjectOnPlane(rodOffset, railDirection.forward);
-
-        basePlate.position =
-            singleSlit.position +
-            moveVector +
-            Vector3.ProjectOnPlane(baseOffset, railDirection.forward);
     }
+
 
     public void SetDistance()
     {
